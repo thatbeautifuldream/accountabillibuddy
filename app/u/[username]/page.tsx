@@ -4,14 +4,19 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { PostItem } from "@/components/post-item";
 import { Skeleton } from "@/components/ui/skeleton";
+import { use } from "react";
+import { useUser } from "@clerk/nextjs";
 
 export default function UserProfilePage({
     params,
 }: {
     params: { username: string };
 }) {
+    const { username } = use(params);
+    const { user } = useUser();
+    const decodedUsername = decodeURIComponent(username);
     const posts = useQuery(api.posts.getUserPostsByUsername, {
-        username: params.username,
+        username: decodedUsername,
     });
 
     if (posts === undefined) {
@@ -33,7 +38,7 @@ export default function UserProfilePage({
         <div className="container max-w-2xl mx-auto p-6 space-y-8">
             <div className="space-y-4">
                 <h1 className="text-2xl font-bold text-center">
-                    {params.username}&apos;s Accountability Posts
+                    {decodedUsername}&apos;s Accountability Posts
                 </h1>
                 {posts.length === 0 ? (
                     <div className="text-center p-6 bg-muted rounded-lg">
@@ -42,7 +47,11 @@ export default function UserProfilePage({
                 ) : (
                     <div className="space-y-4">
                         {posts.map((post) => (
-                            <PostItem key={post._id} post={post} />
+                            <PostItem
+                                key={post._id}
+                                post={post}
+                                currentUserId={user?.id ?? null}
+                            />
                         ))}
                     </div>
                 )}

@@ -18,22 +18,26 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-interface PostItemProps {
+interface Post {
+    _id: Id<"posts">;
     text: string;
     userName: string;
-    createdAt: number;
-    postId: Id<"posts">;
     userId: string;
-    currentUserId: string | null;
+    createdAt: number;
 }
 
-export function PostItem({ text, userName, createdAt, postId, userId, currentUserId }: PostItemProps) {
+interface PostItemProps {
+    post: Post;
+    currentUserId?: string | null;
+}
+
+export function PostItem({ post, currentUserId }: PostItemProps) {
     const deletePost = useMutation(api.posts.deletePost);
 
     const handleDelete = async () => {
         try {
             await deletePost({
-                postId,
+                postId: post._id,
                 userId: currentUserId!
             });
         } catch (error) {
@@ -46,20 +50,20 @@ export function PostItem({ text, userName, createdAt, postId, userId, currentUse
             <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
                     <Link
-                        href={`/u/${userName}`}
+                        href={`/u/${encodeURIComponent(post.userName)}`}
                         className="font-semibold hover:underline"
                     >
-                        {userName}
+                        {post.userName}
                     </Link>
                     <span className="text-sm text-muted-foreground">
-                        {formatDistanceToNow(createdAt, { addSuffix: true })}
+                        {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
                     </span>
                 </div>
             </CardHeader>
             <CardContent>
                 <div className="relative">
-                    <p className="whitespace-pre-wrap">{text}</p>
-                    {currentUserId && currentUserId === userId && (
+                    <p className="whitespace-pre-wrap">{post.text}</p>
+                    {currentUserId && currentUserId === post.userId && (
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
                                 <Button
