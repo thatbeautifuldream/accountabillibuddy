@@ -31,11 +31,7 @@ export function PostFeed() {
             {posts.map((post) => (
                 <PostItem
                     key={post._id}
-                    text={post.text}
-                    userName={post.userName}
-                    createdAt={post.createdAt}
-                    postId={post._id}
-                    userId={post.userId}
+                    post={post}
                     currentUserId={user?.id ?? null}
                 />
             ))}
