@@ -6,8 +6,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { toast } from "sonner"
 
-
-
 export function PostForm() {
     const { user } = useUser();
     const createPost = useMutation(api.posts.createPost);
@@ -39,8 +37,8 @@ export function PostForm() {
                 onChange={(e) => setText(e.target.value)}
                 className="min-h-[100px]"
             />
-            <Button type="submit" disabled={!user || !text.trim()}>
-                Post
+            <Button type="submit" disabled={!user || !text.trim()} className="w-full">
+                Post Accountability
             </Button>
         </form>
     );

@@ -7,5 +7,7 @@ export default defineSchema({
     userId: v.string(),
     userName: v.string(),
     createdAt: v.number(),
-  }).index("creation_time", ["createdAt"]),
+  })
+    .index("by_creation_time", ["createdAt"])
+    .index("by_username_and_creation_time", ["userName", "createdAt"]),
 });

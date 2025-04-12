@@ -28,3 +28,38 @@ export const listPosts = query({
       .collect();
   },
 });
+
+export const deletePost = mutation({
+  args: {
+    postId: v.id("posts"),
+    userId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const post = await ctx.db.get(args.postId);
+
+    if (!post) {
+      throw new Error("Post not found");
+    }
+
+    if (post.userId !== args.userId) {
+      throw new Error("Unauthorized: You can only delete your own posts");
+    }
+
+    await ctx.db.delete(args.postId);
+  },
+});
+
+export const getUserPostsByUsername = query({
+  args: {
+    username: v.string(),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("posts")
+      .withIndex("by_username_and_creation_time", (q) =>
+        q.eq("userName", args.username),
+      )
+      .order("desc")
+      .collect();
+  },
+});

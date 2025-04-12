@@ -2,9 +2,11 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { PostItem } from "./post-item";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useUser } from "@clerk/nextjs";
 
 export function PostFeed() {
     const posts = useQuery(api.posts.listPosts);
+    const { user } = useUser();
 
     if (posts === undefined) {
         return (
@@ -32,6 +34,9 @@ export function PostFeed() {
                     text={post.text}
                     userName={post.userName}
                     createdAt={post.createdAt}
+                    postId={post._id}
+                    userId={post.userId}
+                    currentUserId={user?.id ?? null}
                 />
             ))}
         </div>
