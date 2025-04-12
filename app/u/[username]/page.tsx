@@ -10,7 +10,7 @@ import { useUser } from "@clerk/nextjs";
 export default function UserProfilePage({
     params,
 }: {
-    params: { username: string };
+    params: Promise<{ username: string }>;
 }) {
     const { username } = use(params);
     const { user } = useUser();
