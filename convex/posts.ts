@@ -74,6 +74,27 @@ export const deletePost = mutation({
       throw new Error("Unauthorized: You can only delete your own posts");
     }
 
+    // Delete all updates related to this post
+    const updates = await ctx.db
+      .query("updates")
+      .withIndex("by_post_id", (q) => q.eq("postId", args.postId))
+      .collect();
+
+    for (const update of updates) {
+      await ctx.db.delete(update._id);
+    }
+
+    // Delete all upvotes related to this post
+    const upvotes = await ctx.db
+      .query("postUpvotes")
+      .withIndex("by_post", (q) => q.eq("postId", args.postId))
+      .collect();
+
+    for (const upvote of upvotes) {
+      await ctx.db.delete(upvote._id);
+    }
+
+    // Finally, delete the post itself
     await ctx.db.delete(args.postId);
   },
 });
