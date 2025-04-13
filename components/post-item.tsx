@@ -1,12 +1,13 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { Trash2, ThumbsUp } from "lucide-react";
+import { ThumbsUp, MoreVertical, Pen, Trash2, Loader2 } from "lucide-react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import Link from "next/link";
 import { UpdateThread } from "./update-thread";
+import { EditPostDialog } from "./edit-post-dialog";
 import { useUser } from "@clerk/nextjs";
 import {
     AlertDialog,
@@ -17,10 +18,16 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface Post {
     _id: Id<"posts">;
@@ -39,6 +46,8 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
     const deletePost = useMutation(api.posts.deletePost);
     const toggleUpvote = useMutation(api.upvotes.toggleUpvote);
     const { user } = useUser();
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
     // Get the upvote count
     const upvoteCount = useQuery(api.upvotes.getUpvoteCount, {
@@ -57,19 +66,26 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
     // For optimistic UI updates
     const [optimisticUpvoted, setOptimisticUpvoted] = useState(false);
     const [optimisticUpvoteCount, setOptimisticUpvoteCount] = useState(0);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     // Use optimistic values if they've changed, otherwise use the real values
     const displayedUpvoted = optimisticUpvoted !== false ? optimisticUpvoted : hasUpvoted;
     const displayedUpvoteCount = optimisticUpvoteCount !== 0 ? optimisticUpvoteCount : upvoteCount;
 
     const handleDelete = async () => {
+        setIsDeleting(true);
         try {
             await deletePost({
                 postId: post._id,
                 userId: currentUserId!
             });
+            toast.success("Post deleted successfully");
+            setIsDeleteDialogOpen(false);
         } catch (error) {
             console.error("Failed to delete post:", error);
+            toast.error("Failed to delete post. Please try again.");
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -94,6 +110,7 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
             // Revert optimistic updates on error
             setOptimisticUpvoted(false);
             setOptimisticUpvoteCount(0);
+            toast.error("Failed to update vote. Please try again.");
         }
     };
 
@@ -109,9 +126,41 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
                     >
                         {post.userName}
                     </Link>
-                    <span className="text-sm text-muted-foreground">
-                        {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
-                    </span>
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">
+                            {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+                        </span>
+
+                        {isAuthor && (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                                    >
+                                        <MoreVertical className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuItem
+                                        onClick={() => setIsEditDialogOpen(true)}
+                                        className="cursor-pointer flex items-center gap-2"
+                                    >
+                                        <Pen className="h-4 w-4" />
+                                        <span>Edit Post</span>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                        onClick={() => setIsDeleteDialogOpen(true)}
+                                        className="cursor-pointer text-destructive flex items-center gap-2"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                        <span>Delete Post</span>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        )}
+                    </div>
                 </div>
             </CardHeader>
             <CardContent>
@@ -119,7 +168,7 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
                     <p className="whitespace-pre-wrap">{post.text}</p>
                 </div>
 
-                <div className="flex items-center mt-4 justify-between">
+                <div className="flex items-center mt-4">
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -141,32 +190,6 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
-
-                    {isAuthor && (
-                        <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="text-muted-foreground"
-                                >
-                                    <Trash2 className="h-4 w-4" />
-                                </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>Delete Post</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        Are you sure you want to delete this post? This action cannot be undone.
-                                    </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
-                    )}
                 </div>
 
                 <div className="mt-4">
@@ -178,6 +201,39 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
                     />
                 </div>
             </CardContent>
+
+            {/* Edit Dialog */}
+            {isAuthor && currentUserId && (
+                <EditPostDialog
+                    post={post}
+                    currentUserId={currentUserId}
+                    isOpen={isEditDialogOpen}
+                    onOpenChange={setIsEditDialogOpen}
+                />
+            )}
+
+            {/* Delete Dialog */}
+            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Delete Post</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Are you sure you want to delete this post? This action cannot be undone.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={handleDelete}
+                            disabled={isDeleting}
+                            className="flex items-center gap-2"
+                        >
+                            {isDeleting && <Loader2 className="h-4 w-4 animate-spin" />}
+                            {isDeleting ? "Deleting..." : "Delete"}
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </Card>
     );
 } 

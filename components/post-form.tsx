@@ -4,7 +4,8 @@ import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { toast } from "sonner"
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -22,6 +23,7 @@ export function PostForm() {
     const createPost = useMutation(api.posts.createPost);
     const [text, setText] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,8 +31,17 @@ export function PostForm() {
         setIsDialogOpen(true);
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        // Submit on Ctrl+Enter or Cmd+Enter
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+            e.preventDefault();
+            handleSubmit(e as unknown as React.FormEvent);
+        }
+    };
+
     const handleConfirm = async () => {
         try {
+            setIsSubmitting(true);
             await createPost({
                 text: text.trim(),
                 userId: user!.id,
@@ -42,6 +53,8 @@ export function PostForm() {
         } catch (error) {
             console.error(error);
             toast.error("Failed to create post. Please try again.");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -51,11 +64,17 @@ export function PostForm() {
                 placeholder="What do you want to be accountable for?"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                className="min-h-[100px]"
+                onKeyDown={handleKeyDown}
+                className="w-full"
             />
             <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <AlertDialogTrigger asChild>
-                    <Button type="submit" disabled={!user || !text.trim()} className="w-full">
+                    <Button
+                        type="submit"
+                        disabled={!user || !text.trim() || isSubmitting}
+                        className="w-full flex items-center justify-center gap-2"
+                    >
+                        {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
                         Post Accountability
                     </Button>
                 </AlertDialogTrigger>
@@ -67,8 +86,15 @@ export function PostForm() {
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleConfirm}>Post</AlertDialogAction>
+                        <AlertDialogCancel disabled={isSubmitting}>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={handleConfirm}
+                            disabled={isSubmitting}
+                            className="flex items-center gap-2"
+                        >
+                            {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
+                            {isSubmitting ? "Posting..." : "Post"}
+                        </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

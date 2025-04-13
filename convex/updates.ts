@@ -32,6 +32,51 @@ export const createUpdate = mutation({
   },
 });
 
+export const editUpdate = mutation({
+  args: {
+    updateId: v.id("updates"),
+    text: v.string(),
+    userId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const update = await ctx.db.get(args.updateId);
+
+    if (!update) {
+      throw new Error("Update not found");
+    }
+
+    if (update.userId !== args.userId) {
+      throw new Error("Unauthorized: You can only edit your own updates");
+    }
+
+    await ctx.db.patch(args.updateId, {
+      text: args.text,
+    });
+
+    return args.updateId;
+  },
+});
+
+export const deleteUpdate = mutation({
+  args: {
+    updateId: v.id("updates"),
+    userId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const update = await ctx.db.get(args.updateId);
+
+    if (!update) {
+      throw new Error("Update not found");
+    }
+
+    if (update.userId !== args.userId) {
+      throw new Error("Unauthorized: You can only delete your own updates");
+    }
+
+    await ctx.db.delete(args.updateId);
+  },
+});
+
 export const getUpdatesForPost = query({
   args: {
     postId: v.id("posts"),

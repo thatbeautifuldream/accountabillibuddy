@@ -49,6 +49,31 @@ export const deletePost = mutation({
   },
 });
 
+export const editPost = mutation({
+  args: {
+    postId: v.id("posts"),
+    userId: v.string(),
+    text: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const post = await ctx.db.get(args.postId);
+
+    if (!post) {
+      throw new Error("Post not found");
+    }
+
+    if (post.userId !== args.userId) {
+      throw new Error("Unauthorized: You can only edit your own posts");
+    }
+
+    await ctx.db.patch(args.postId, {
+      text: args.text,
+    });
+
+    return args.postId;
+  },
+});
+
 export const getUserPostsByUsername = query({
   args: {
     username: v.string(),
