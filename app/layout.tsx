@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
-import ConvexClientProvider from "@/components/convex-client-provider";
+import ConvexClientProvider from "@/components/providers/convex-client-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 const bricolageGrotesque = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -25,18 +26,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${bricolageGrotesque.className} antialiased`}>
         <ClerkProvider dynamic>
           <ConvexClientProvider>
-            <div className="min-h-screen flex flex-col @container">
-              <Header />
-              <main className="flex-1 @container">
-                {children}
-              </main>
-              <Footer />
-            </div>
-            <Toaster />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <div className="min-h-screen flex flex-col @container">
+                <Header />
+                <main className="flex-1 @container">
+                  {children}
+                </main>
+                <Footer />
+              </div>
+              <Toaster />
+            </ThemeProvider>
           </ConvexClientProvider>
         </ClerkProvider>
       </body>

@@ -2,6 +2,7 @@
 
 import { SignInButton, SignUpButton, UserButton, useUser } from '@clerk/nextjs'
 import Link from 'next/link';
+import { ThemeToggle } from './theme-toggle';
 
 export function Header() {
     const { isSignedIn } = useUser();
@@ -10,22 +11,26 @@ export function Header() {
             <div className="container mx-auto p-4 @container">
                 <div className="flex flex-col @md:flex-row justify-between items-center gap-4">
                     <Link href="/" className="text-xl font-bold">Accountabillibuddy</Link>
-                    {isSignedIn ? (
-                        <UserButton afterSignOutUrl="/" />
-                    ) : (
-                        <div className="flex gap-2">
-                            <SignInButton mode="modal">
-                                <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm">
-                                    Sign in
-                                </button>
-                            </SignInButton>
-                            <SignUpButton mode="modal">
-                                <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm">
-                                    Sign up
-                                </button>
-                            </SignUpButton>
-                        </div>
-                    )}
+
+                    <div className="flex items-center gap-4">
+                        <ThemeToggle />
+                        {isSignedIn ? (
+                            <UserButton afterSignOutUrl="/" />
+                        ) : (
+                            <div className="flex gap-2">
+                                <SignInButton mode="modal">
+                                    <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm">
+                                        Sign in
+                                    </button>
+                                </SignInButton>
+                                <SignUpButton mode="modal">
+                                    <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm">
+                                        Sign up
+                                    </button>
+                                </SignUpButton>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </header>
