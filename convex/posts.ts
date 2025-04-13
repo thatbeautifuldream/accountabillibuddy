@@ -7,14 +7,21 @@ export const createPost = mutation({
     userId: v.string(),
     userName: v.string(),
     isPrivate: v.optional(v.boolean()),
+    tags: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
+    // Normalize tags if provided
+    const normalizedTags = args.tags
+      ?.map((tag) => tag.trim().toLowerCase())
+      .filter(Boolean);
+
     const postId = await ctx.db.insert("posts", {
       text: args.text,
       userId: args.userId,
       userName: args.userName,
       createdAt: Date.now(),
       isPrivate: args.isPrivate ?? false,
+      tags: normalizedTags,
     });
     return postId;
   },
@@ -105,6 +112,7 @@ export const editPost = mutation({
     userId: v.string(),
     text: v.string(),
     isPrivate: v.optional(v.boolean()),
+    tags: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
     const post = await ctx.db.get(args.postId);
@@ -117,13 +125,20 @@ export const editPost = mutation({
       throw new Error("Unauthorized: You can only edit your own posts");
     }
 
-    const updateData: { text: string; isPrivate?: boolean } = {
+    const updateData: { text: string; isPrivate?: boolean; tags?: string[] } = {
       text: args.text,
     };
 
     // Only update isPrivate if it's provided
     if (args.isPrivate !== undefined) {
       updateData.isPrivate = args.isPrivate;
+    }
+
+    // Normalize and update tags if provided
+    if (args.tags !== undefined) {
+      updateData.tags = args.tags
+        .map((tag) => tag.trim().toLowerCase())
+        .filter(Boolean);
     }
 
     await ctx.db.patch(args.postId, updateData);
@@ -199,6 +214,64 @@ export const getUserPostsByUsername = query({
         );
       }
       // If viewing own profile, show all posts (no filter needed)
+    }
+
+    return await postsQuery.order("desc").collect();
+  },
+});
+
+export const getPostsByTag = query({
+  args: {
+    tag: v.string(),
+    currentUserId: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const normalizedTag = args.tag.trim().toLowerCase();
+
+    // Start with the base query and do a full scan since we need to filter on array elements
+    const postsWithTag = await ctx.db
+      .query("posts")
+      .collect()
+      .then((posts) =>
+        posts.filter((post) => post.tags?.some((tag) => tag === normalizedTag)),
+      );
+
+    // Get the IDs of posts with the tag
+    const postIds = postsWithTag.map((post) => post._id);
+
+    if (postIds.length === 0) {
+      return [];
+    }
+
+    // Create a new query to filter by these IDs and add privacy filtering
+    let postsQuery = ctx.db
+      .query("posts")
+      .filter((q) => q.or(...postIds.map((id) => q.eq(q.field("_id"), id))));
+
+    // Add privacy filtering
+    if (args.currentUserId) {
+      postsQuery = postsQuery.filter((q) =>
+        q.or(
+          // Public posts
+          q.or(
+            q.eq(q.field("isPrivate"), false),
+            q.eq(q.field("isPrivate"), undefined),
+          ),
+          // User's own private posts
+          q.and(
+            q.eq(q.field("userId"), args.currentUserId),
+            q.eq(q.field("isPrivate"), true),
+          ),
+        ),
+      );
+    } else {
+      // If no user is logged in, only return public posts
+      postsQuery = postsQuery.filter((q) =>
+        q.or(
+          q.eq(q.field("isPrivate"), false),
+          q.eq(q.field("isPrivate"), undefined),
+        ),
+      );
     }
 
     return await postsQuery.order("desc").collect();

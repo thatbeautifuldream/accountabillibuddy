@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Loader2, Lock } from "lucide-react";
+import { Loader2, Lock, Hash } from "lucide-react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -19,11 +19,13 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Label } from "@/components/ui/label";
+import { TagInput } from "@/components/ui/tag-input";
 
 export function PostForm() {
     const { user } = useUser();
     const createPost = useMutation(api.posts.createPost);
     const [text, setText] = useState("");
+    const [tags, setTags] = useState<string[]>([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isPrivate, setIsPrivate] = useState(false);
@@ -50,8 +52,10 @@ export function PostForm() {
                 userId: user!.id,
                 userName: user!.fullName || "Anonymous",
                 isPrivate: isPrivate,
+                tags: tags.length > 0 ? tags : undefined,
             });
             setText("");
+            setTags([]);
             setIsDialogOpen(false);
             toast.success("Your accountability post has been created.");
         } catch (error) {
@@ -74,6 +78,20 @@ export function PostForm() {
                     className="w-full resize-none"
                 />
             </div>
+
+            <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                    <Hash className="h-4 w-4 text-muted-foreground" />
+                    <Label>Tags</Label>
+                </div>
+                <TagInput
+                    value={tags}
+                    onChange={setTags}
+                    placeholder="Add tags (e.g. fitness, learning)"
+                    maxTags={5}
+                />
+            </div>
+
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                     <Switch
@@ -112,6 +130,14 @@ export function PostForm() {
                                 <div className="mt-2 flex items-center text-sm text-amber-600 dark:text-amber-400">
                                     <Lock className="mr-1 h-4 w-4" />
                                     This post will be private and only visible to you.
+                                </div>
+                            )}
+                            {tags.length > 0 && (
+                                <div className="mt-2 flex flex-wrap gap-1 items-center">
+                                    <span className="text-sm">Tags:</span>
+                                    {tags.map(tag => (
+                                        <span key={tag} className="text-sm text-primary">#{tag}</span>
+                                    ))}
                                 </div>
                             )}
                         </AlertDialogDescription>

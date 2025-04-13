@@ -13,10 +13,11 @@ import {
     DialogFooter,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { Loader2, Lock } from "lucide-react";
+import { Loader2, Lock, Hash } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { TagInput } from "@/components/ui/tag-input";
 
 interface EditPostDialogProps {
     post: {
@@ -24,6 +25,7 @@ interface EditPostDialogProps {
         text: string;
         userId: string;
         isPrivate?: boolean;
+        tags?: string[];
     };
     currentUserId: string;
     isOpen?: boolean;
@@ -40,6 +42,7 @@ export function EditPostDialog({
 }: EditPostDialogProps) {
     const [text, setText] = useState(post.text);
     const [isPrivate, setIsPrivate] = useState(post.isPrivate ?? false);
+    const [tags, setTags] = useState<string[]>(post.tags || []);
     const [isLocalOpen, setIsLocalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const editPost = useMutation(api.posts.editPost);
@@ -53,8 +56,9 @@ export function EditPostDialog({
         if (isOpen) {
             setText(post.text);
             setIsPrivate(post.isPrivate ?? false);
+            setTags(post.tags || []);
         }
-    }, [isOpen, post.text, post.isPrivate]);
+    }, [isOpen, post.text, post.isPrivate, post.tags]);
 
     // Only post author can edit
     if (post.userId !== currentUserId) {
@@ -67,7 +71,11 @@ export function EditPostDialog({
             return;
         }
 
-        const hasNoChanges = text.trim() === post.text && isPrivate === (post.isPrivate ?? false);
+        const hasNoChanges =
+            text.trim() === post.text &&
+            isPrivate === (post.isPrivate ?? false) &&
+            JSON.stringify(tags) === JSON.stringify(post.tags || []);
+
         if (hasNoChanges) {
             onOpenChange(false);
             return;
@@ -81,6 +89,7 @@ export function EditPostDialog({
                 userId: currentUserId,
                 text: text.trim(),
                 isPrivate: isPrivate,
+                tags: tags,
             });
             toast.success("Post updated successfully");
             onOpenChange(false);
@@ -120,6 +129,20 @@ export function EditPostDialog({
                         onKeyDown={handleKeyDown}
                         autoFocus
                     />
+
+                    <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                            <Hash className="h-4 w-4 text-muted-foreground" />
+                            <Label>Tags</Label>
+                        </div>
+                        <TagInput
+                            value={tags}
+                            onChange={setTags}
+                            placeholder="Add tags (e.g. fitness, learning)"
+                            maxTags={5}
+                        />
+                    </div>
+
                     <div className="flex items-center space-x-2">
                         <Switch
                             id="edit-private-toggle"
@@ -153,7 +176,11 @@ export function EditPostDialog({
                     </Button>
                     <Button
                         onClick={handleEdit}
-                        disabled={isLoading || !text.trim() || (text.trim() === post.text && isPrivate === (post.isPrivate ?? false))}
+                        disabled={isLoading || !text.trim() || (
+                            text.trim() === post.text &&
+                            isPrivate === (post.isPrivate ?? false) &&
+                            JSON.stringify(tags) === JSON.stringify(post.tags || [])
+                        )}
                         className="gap-2"
                     >
                         {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}

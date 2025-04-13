@@ -28,6 +28,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { useRouter } from "next/navigation";
 
 interface Post {
     _id: Id<"posts">;
@@ -36,6 +38,7 @@ interface Post {
     userId: string;
     createdAt: number;
     isPrivate?: boolean;
+    tags?: string[];
 }
 
 interface PostItemProps {
@@ -44,6 +47,7 @@ interface PostItemProps {
 }
 
 export function PostItem({ post, currentUserId }: PostItemProps) {
+    const router = useRouter();
     const deletePost = useMutation(api.posts.deletePost);
     const toggleUpvote = useMutation(api.upvotes.toggleUpvote);
     const togglePrivacy = useMutation(api.posts.togglePostPrivacy);
@@ -75,6 +79,10 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
     const displayedUpvoted = optimisticUpvoted !== false ? optimisticUpvoted : hasUpvoted;
     const displayedUpvoteCount = optimisticUpvoteCount !== 0 ? optimisticUpvoteCount : upvoteCount;
     const isPrivate = optimisticPrivacy !== null ? optimisticPrivacy : (post.isPrivate ?? false);
+
+    const handleTagClick = (tag: string) => {
+        router.push(`/tags/${encodeURIComponent(tag)}`);
+    };
 
     const handleDelete = async () => {
         setIsDeleting(true);
@@ -215,6 +223,21 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
             <CardContent>
                 <div className="relative">
                     <p className="whitespace-pre-wrap">{post.text}</p>
+
+                    {post.tags && post.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-3">
+                            {post.tags.map(tag => (
+                                <Badge
+                                    key={tag}
+                                    variant="outline"
+                                    className="cursor-pointer hover:bg-accent"
+                                    onClick={() => handleTagClick(tag)}
+                                >
+                                    #{tag}
+                                </Badge>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex items-center mt-4">
