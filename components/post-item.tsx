@@ -6,6 +6,8 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import Link from "next/link";
+import { UpdateThread } from "./update-thread";
+import { useUser } from "@clerk/nextjs";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -33,6 +35,7 @@ interface PostItemProps {
 
 export function PostItem({ post, currentUserId }: PostItemProps) {
     const deletePost = useMutation(api.posts.deletePost);
+    const { user } = useUser();
 
     const handleDelete = async () => {
         try {
@@ -44,6 +47,8 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
             console.error("Failed to delete post:", error);
         }
     };
+
+    const isAuthor = currentUserId === post.userId;
 
     return (
         <Card>
@@ -63,7 +68,7 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
             <CardContent>
                 <div className="relative">
                     <p className="whitespace-pre-wrap">{post.text}</p>
-                    {currentUserId && currentUserId === post.userId && (
+                    {isAuthor && (
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
                                 <Button
@@ -89,6 +94,13 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
                         </AlertDialog>
                     )}
                 </div>
+
+                <UpdateThread
+                    postId={post._id}
+                    isAuthor={isAuthor}
+                    userId={currentUserId || null}
+                    userName={user?.fullName || null}
+                />
             </CardContent>
         </Card>
     );
