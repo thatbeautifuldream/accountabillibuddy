@@ -15,6 +15,7 @@ import type {
 } from "convex/server";
 import type * as posts from "../posts.js";
 import type * as updates from "../updates.js";
+import type * as upvotes from "../upvotes.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -27,6 +28,7 @@ import type * as updates from "../updates.js";
 declare const fullApi: ApiFromModules<{
   posts: typeof posts;
   updates: typeof updates;
+  upvotes: typeof upvotes;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

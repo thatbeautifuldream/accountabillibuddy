@@ -1,12 +1,22 @@
 "use client"
 
 import { MoonIcon, SunIcon } from "lucide-react"
+import { useEffect, useState } from "react"
 
 import { Toggle } from "@/components/ui/toggle"
 import { useTheme } from "next-themes"
 
 export function ThemeToggle() {
     const { theme, setTheme } = useTheme()
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted) {
+        return <div className="size-9" />
+    }
 
     return (
         <div>

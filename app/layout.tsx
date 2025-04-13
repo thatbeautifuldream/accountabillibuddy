@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${bricolageGrotesque.className} antialiased`}>
+      <body className={`${bricolageGrotesque.className} antialiased overflow-x-hidden`}>
         <ClerkProvider dynamic>
           <ConvexClientProvider>
             <ThemeProvider
@@ -36,9 +36,9 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <div className="min-h-screen flex flex-col @container">
+              <div className="min-h-screen flex flex-col overflow-hidden @container">
                 <Header />
-                <main className="flex-1 @container">
+                <main className="flex-1 w-full @container">
                   {children}
                 </main>
                 <Footer />

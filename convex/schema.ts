@@ -11,6 +11,15 @@ export default defineSchema({
     .index("by_post_creation_time", ["createdAt"])
     .index("by_username_and_creation_time", ["userName", "createdAt"]),
 
+  postUpvotes: defineTable({
+    postId: v.id("posts"),
+    userId: v.string(),
+    createdAt: v.number(),
+  })
+    .index("by_post", ["postId"])
+    .index("by_user", ["userId"])
+    .index("by_post_and_user", ["postId", "userId"]),
+
   updates: defineTable({
     postId: v.id("posts"),
     userId: v.string(),
