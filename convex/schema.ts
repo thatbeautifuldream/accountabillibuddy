@@ -7,6 +7,7 @@ export default defineSchema({
     userId: v.string(),
     userName: v.string(),
     createdAt: v.number(),
+    isPrivate: v.optional(v.boolean()),
   })
     .index("by_post_creation_time", ["createdAt"])
     .index("by_username_and_creation_time", ["userName", "createdAt"]),

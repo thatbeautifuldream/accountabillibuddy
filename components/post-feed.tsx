@@ -5,8 +5,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useUser } from "@clerk/nextjs";
 
 export function PostFeed() {
-    const posts = useQuery(api.posts.listPosts);
     const { user } = useUser();
+    const posts = useQuery(api.posts.listPosts, {
+        userId: user?.id
+    });
 
     if (posts === undefined) {
         return (

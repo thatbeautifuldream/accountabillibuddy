@@ -21,6 +21,7 @@ export default function UserProfilePage({
     const decodedUsername = decodeURIComponent(username);
     const posts = useQuery(api.posts.getUserPostsByUsername, {
         username: decodedUsername,
+        currentUserId: user?.id,
     });
 
     if (posts === undefined) {
