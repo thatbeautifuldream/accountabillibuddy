@@ -8,6 +8,6 @@ export default defineSchema({
     userName: v.string(),
     createdAt: v.number(),
   })
-    .index("by_creation_time", ["createdAt"])
+    .index("by_post_creation_time", ["createdAt"])
     .index("by_username_and_creation_time", ["userName", "createdAt"]),
 });
