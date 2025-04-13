@@ -1,6 +1,7 @@
 'use client'
 
 import { SignInButton, SignUpButton, UserButton, useUser } from '@clerk/nextjs'
+import Link from 'next/link';
 
 export function Header() {
     const { isSignedIn } = useUser();
@@ -8,7 +9,7 @@ export function Header() {
         <header className="sticky top-0 z-10 bg-background border-b border-border">
             <div className="container mx-auto p-4 @container">
                 <div className="flex flex-col @md:flex-row justify-between items-center gap-4">
-                    <h1 className="text-xl font-bold">Accountabillibuddy</h1>
+                    <Link href="/" className="text-xl font-bold">Accountabillibuddy</Link>
                     {isSignedIn ? (
                         <UserButton afterSignOutUrl="/" />
                     ) : (

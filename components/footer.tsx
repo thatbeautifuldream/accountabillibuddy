@@ -7,10 +7,10 @@ export function Footer() {
                         © {new Date().getFullYear()} Accountabillibuddy. All rights reserved.
                     </div>
                     <div className="flex gap-4">
-                        <a href="#" className="text-sm text-muted-foreground hover:text-foreground">
+                        <a href="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
                             Privacy Policy
                         </a>
-                        <a href="#" className="text-sm text-muted-foreground hover:text-foreground">
+                        <a href="/terms" className="text-sm text-muted-foreground hover:text-foreground">
                             Terms of Service
                         </a>
                     </div>
