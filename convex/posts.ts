@@ -277,3 +277,12 @@ export const getPostsByTag = query({
     return await postsQuery.order("desc").collect();
   },
 });
+
+export const getPostById = query({
+  args: {
+    postId: v.id("posts"),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.postId);
+  },
+});

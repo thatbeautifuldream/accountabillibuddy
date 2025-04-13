@@ -31,4 +31,17 @@ export default defineSchema({
   })
     .index("by_post_id", ["postId"])
     .index("by_post_id_and_creation_time", ["postId", "createdAt"]),
+
+  notifications: defineTable({
+    userId: v.string(), // receiver
+    actorId: v.string(), // who triggered the notification
+    actorName: v.string(), // username of actor
+    message: v.string(),
+    postId: v.id("posts"),
+    isRead: v.boolean(),
+    createdAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_user_and_creation_time", ["userId", "createdAt"])
+    .index("by_user_and_read_status", ["userId", "isRead"]),
 });

@@ -3,6 +3,7 @@
 import { SignInButton, SignUpButton, UserButton, useUser } from '@clerk/nextjs'
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
+import { NotificationBell } from './notification-bell';
 
 export function Header() {
     const { isSignedIn } = useUser();
@@ -14,6 +15,7 @@ export function Header() {
 
                     <div className="flex items-center gap-4">
                         <ThemeToggle />
+                        {isSignedIn && <NotificationBell />}
                         {isSignedIn ? (
                             <UserButton afterSignOutUrl="/" />
                         ) : (

@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as notifications from "../notifications.js";
 import type * as posts from "../posts.js";
 import type * as updates from "../updates.js";
 import type * as upvotes from "../upvotes.js";
@@ -26,6 +27,7 @@ import type * as upvotes from "../upvotes.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  notifications: typeof notifications;
   posts: typeof posts;
   updates: typeof updates;
   upvotes: typeof upvotes;

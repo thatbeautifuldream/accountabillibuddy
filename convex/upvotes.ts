@@ -1,11 +1,13 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { api } from "./_generated/api";
 
 // Toggle an upvote for a post (add if not exists, remove if exists)
 export const toggleUpvote = mutation({
   args: {
     postId: v.id("posts"),
     userId: v.string(),
+    userName: v.string(),
   },
   handler: async (ctx, args) => {
     // Verify the post exists
@@ -47,6 +49,18 @@ export const toggleUpvote = mutation({
       userId: args.userId,
       createdAt: Date.now(),
     });
+
+    // Create a notification for the post author
+    if (post.userId !== args.userId) {
+      await ctx.runMutation(api.notifications.createNotification, {
+        userId: post.userId,
+        actorId: args.userId,
+        actorName: args.userName,
+        message: `@${args.userName} upvoted your post.`,
+        postId: args.postId,
+      });
+    }
+
     return { action: "added", id: upvoteId };
   },
 });

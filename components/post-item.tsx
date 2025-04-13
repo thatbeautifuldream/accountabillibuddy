@@ -126,7 +126,7 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
     };
 
     const handleUpvote = async () => {
-        if (!currentUserId) return;
+        if (!currentUserId || !user) return;
 
         // Optimistic updates
         setOptimisticUpvoted(!displayedUpvoted);
@@ -135,7 +135,8 @@ export function PostItem({ post, currentUserId }: PostItemProps) {
         try {
             await toggleUpvote({
                 postId: post._id,
-                userId: currentUserId
+                userId: currentUserId,
+                userName: user.username || user.firstName || 'User'
             });
 
             // Reset optimistic values after successful mutation
