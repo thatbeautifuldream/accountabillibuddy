@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useEffect } from "react";
+import { LayoutWrapper } from "@/components/layout-wrapper";
 
 interface PostClientProps {
     postId: Id<"posts">;
@@ -52,8 +53,8 @@ export default function PostClient({ postId }: PostClientProps) {
         }
     }, [user?.id, postId, post, userNotifications, markNotificationAsRead]);
 
-    return (
-        <div className="container mx-auto py-8 px-4">
+    const content = (
+        <div>
             <Button
                 variant="ghost"
                 onClick={() => router.back()}
@@ -68,10 +69,10 @@ export default function PostClient({ postId }: PostClientProps) {
                     <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
                 </div>
             ) : (
-                <div className="max-w-3xl mx-auto">
-                    <PostItem post={post} currentUserId={isSignedIn ? user?.id : null} />
-                </div>
+                <PostItem post={post} currentUserId={isSignedIn ? user?.id : null} />
             )}
         </div>
     );
+
+    return <LayoutWrapper>{content}</LayoutWrapper>;
 } 

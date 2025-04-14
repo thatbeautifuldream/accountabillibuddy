@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { Bell, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Id } from "@/convex/_generated/dataModel";
+import { LayoutWrapper } from "@/components/layout-wrapper";
 
 export default function NotificationsClient() {
     const { user, isSignedIn, isLoaded } = useUser();
@@ -64,8 +65,8 @@ export default function NotificationsClient() {
         );
     }
 
-    return (
-        <div className="container mx-auto py-8 px-4">
+    const content = (
+        <div>
             <div className="flex items-center justify-between mb-6">
                 <h1 className="text-3xl font-bold flex items-center gap-2">
                     <Bell className="h-6 w-6" />
@@ -102,7 +103,7 @@ export default function NotificationsClient() {
                     <Button onClick={() => router.push('/')}>Back to home</Button>
                 </div>
             ) : (
-                <div className="space-y-4 max-w-3xl mx-auto">
+                <div className="space-y-4">
                     {notifications.map((notification) => (
                         <Card
                             key={notification._id}
@@ -136,4 +137,6 @@ export default function NotificationsClient() {
             )}
         </div>
     );
+
+    return <LayoutWrapper>{content}</LayoutWrapper>;
 } 

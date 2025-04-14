@@ -39,7 +39,9 @@ export default function RootLayout({
               <div className="min-h-screen flex flex-col overflow-hidden @container">
                 <Header />
                 <main className="flex-1 w-full @container">
-                  {children}
+                  <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 py-4">
+                    {children}
+                  </div>
                 </main>
                 <Footer />
               </div>

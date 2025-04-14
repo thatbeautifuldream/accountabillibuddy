@@ -21,7 +21,7 @@ export function ThemeToggle() {
     return (
         <div>
             <Toggle
-                variant="outline"
+                variant="default"
                 className="group size-9 hover:bg-muted bg-transparent"
                 pressed={theme === "dark"}
                 onPressedChange={() =>

@@ -26,7 +26,7 @@ export default function UserProfilePage({
 
     if (posts === undefined) {
         return (
-            <div className="container max-w-4xl mx-auto p-6 space-y-8">
+            <div className="max-w-3xl mx-auto space-y-8">
                 <div className="space-y-6">
                     <div className="flex items-center space-x-4">
                         <Skeleton className="h-24 w-24 rounded-full" />
@@ -54,7 +54,7 @@ export default function UserProfilePage({
     const joinedDate = profileUser?.createdAt ? new Date(profileUser.createdAt) : null;
 
     return (
-        <div className="container max-w-4xl mx-auto p-6 space-y-8">
+        <div className="max-w-3xl mx-auto space-y-8">
             <div className="space-y-6">
                 {/* Profile Header */}
                 <div className="flex items-start space-x-6">
