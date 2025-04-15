@@ -1,0 +1,1312 @@
+openapi: 3.0.3
+info:
+  title: Convex App - OpenAPI 3.0
+  version: 0.0.0
+servers:
+  - url: https://knowing-cod-914.convex.cloud
+security:
+  - bearerAuth: []
+tags:
+  - name: query
+    description: Functions that read data
+  - name: mutation
+    description: Functions that write/update/delete data
+  - name: action
+    description: Functions that can make calls to external APIs
+paths:
+  /api/run/posts/createPost:
+    post:
+      summary: Calls a mutation at the path posts.js:createPost
+      tags:
+        - mutation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_posts.createPost"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_posts.createPost"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/posts/listPosts:
+    post:
+      summary: Calls a query at the path posts.js:listPosts
+      tags:
+        - query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_posts.listPosts"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_posts.listPosts"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/posts/deletePost:
+    post:
+      summary: Calls a mutation at the path posts.js:deletePost
+      tags:
+        - mutation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_posts.deletePost"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_posts.deletePost"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/posts/editPost:
+    post:
+      summary: Calls a mutation at the path posts.js:editPost
+      tags:
+        - mutation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_posts.editPost"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_posts.editPost"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/posts/togglePostPrivacy:
+    post:
+      summary: Calls a mutation at the path posts.js:togglePostPrivacy
+      tags:
+        - mutation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_posts.togglePostPrivacy"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_posts.togglePostPrivacy"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/posts/getUserPostsByUsername:
+    post:
+      summary: Calls a query at the path posts.js:getUserPostsByUsername
+      tags:
+        - query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_posts.getUserPostsByUsername"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_posts.getUserPostsByUsername"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/posts/getPostsByTag:
+    post:
+      summary: Calls a query at the path posts.js:getPostsByTag
+      tags:
+        - query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_posts.getPostsByTag"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_posts.getPostsByTag"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/posts/getPostById:
+    post:
+      summary: Calls a query at the path posts.js:getPostById
+      tags:
+        - query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_posts.getPostById"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_posts.getPostById"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/updates/createUpdate:
+    post:
+      summary: Calls a mutation at the path updates.js:createUpdate
+      tags:
+        - mutation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_updates.createUpdate"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_updates.createUpdate"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/updates/editUpdate:
+    post:
+      summary: Calls a mutation at the path updates.js:editUpdate
+      tags:
+        - mutation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_updates.editUpdate"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_updates.editUpdate"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/updates/deleteUpdate:
+    post:
+      summary: Calls a mutation at the path updates.js:deleteUpdate
+      tags:
+        - mutation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_updates.deleteUpdate"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_updates.deleteUpdate"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/updates/getUpdatesForPost:
+    post:
+      summary: Calls a query at the path updates.js:getUpdatesForPost
+      tags:
+        - query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_updates.getUpdatesForPost"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_updates.getUpdatesForPost"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/upvotes/toggleUpvote:
+    post:
+      summary: Calls a mutation at the path upvotes.js:toggleUpvote
+      tags:
+        - mutation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_upvotes.toggleUpvote"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_upvotes.toggleUpvote"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/upvotes/getUpvoteCount:
+    post:
+      summary: Calls a query at the path upvotes.js:getUpvoteCount
+      tags:
+        - query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_upvotes.getUpvoteCount"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_upvotes.getUpvoteCount"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/upvotes/hasUserUpvoted:
+    post:
+      summary: Calls a query at the path upvotes.js:hasUserUpvoted
+      tags:
+        - query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_upvotes.hasUserUpvoted"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_upvotes.hasUserUpvoted"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/notifications/getNotificationsForUser:
+    post:
+      summary: Calls a query at the path notifications.js:getNotificationsForUser
+      tags:
+        - query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_notifications.getNotificationsForUser"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_notifications.getNotificationsForUser"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/notifications/getUnreadNotificationCount:
+    post:
+      summary: Calls a query at the path notifications.js:getUnreadNotificationCount
+      tags:
+        - query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_notifications.getUnreadNotificationCount"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_notifications.getUnreadNotificationCount"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/notifications/markNotificationAsRead:
+    post:
+      summary: Calls a mutation at the path notifications.js:markNotificationAsRead
+      tags:
+        - mutation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_notifications.markNotificationAsRead"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_notifications.markNotificationAsRead"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/notifications/markAllNotificationsAsRead:
+    post:
+      summary: Calls a mutation at the path notifications.js:markAllNotificationsAsRead
+      tags:
+        - mutation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_notifications.markAllNotificationsAsRead"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_notifications.markAllNotificationsAsRead"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+  /api/run/notifications/createNotification:
+    post:
+      summary: Calls a mutation at the path notifications.js:createNotification
+      tags:
+        - mutation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request_notifications.createNotification"
+        required: true
+      responses:
+        "200":
+          description: Convex executed your request and returned a result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response_notifications.createNotification"
+        "400":
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+        "500":
+          description: Convex Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailedResponse"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Token of the format "Bearer {token}" for normal authentication and "Convex {token}" for admin tokens.
+  schemas:
+    Request_posts.createPost:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - text
+            - userId
+            - userName
+          properties:
+            isPrivate:
+              type: boolean
+            tags:
+              type: array
+              items:
+                type: string
+            text:
+              type: string
+            userId:
+              type: string
+            userName:
+              type: string
+
+    Response_posts.createPost:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_posts.listPosts:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          properties:
+            userId:
+              type: string
+
+    Response_posts.listPosts:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_posts.deletePost:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - postId
+            - userId
+          properties:
+            postId:
+              type: string
+              description: ID from table "posts"
+            userId:
+              type: string
+
+    Response_posts.deletePost:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_posts.editPost:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - postId
+            - text
+            - userId
+          properties:
+            isPrivate:
+              type: boolean
+            postId:
+              type: string
+              description: ID from table "posts"
+            tags:
+              type: array
+              items:
+                type: string
+            text:
+              type: string
+            userId:
+              type: string
+
+    Response_posts.editPost:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_posts.togglePostPrivacy:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - postId
+            - userId
+          properties:
+            postId:
+              type: string
+              description: ID from table "posts"
+            userId:
+              type: string
+
+    Response_posts.togglePostPrivacy:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_posts.getUserPostsByUsername:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - username
+          properties:
+            currentUserId:
+              type: string
+            username:
+              type: string
+
+    Response_posts.getUserPostsByUsername:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_posts.getPostsByTag:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - tag
+          properties:
+            currentUserId:
+              type: string
+            tag:
+              type: string
+
+    Response_posts.getPostsByTag:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_posts.getPostById:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - postId
+          properties:
+            postId:
+              type: string
+              description: ID from table "posts"
+
+    Response_posts.getPostById:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_updates.createUpdate:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - postId
+            - text
+            - userId
+            - userName
+          properties:
+            postId:
+              type: string
+              description: ID from table "posts"
+            text:
+              type: string
+            userId:
+              type: string
+            userName:
+              type: string
+
+    Response_updates.createUpdate:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_updates.editUpdate:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - text
+            - updateId
+            - userId
+          properties:
+            text:
+              type: string
+            updateId:
+              type: string
+              description: ID from table "updates"
+            userId:
+              type: string
+
+    Response_updates.editUpdate:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_updates.deleteUpdate:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - updateId
+            - userId
+          properties:
+            updateId:
+              type: string
+              description: ID from table "updates"
+            userId:
+              type: string
+
+    Response_updates.deleteUpdate:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_updates.getUpdatesForPost:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - postId
+          properties:
+            postId:
+              type: string
+              description: ID from table "posts"
+
+    Response_updates.getUpdatesForPost:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_upvotes.toggleUpvote:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - postId
+            - userId
+            - userName
+          properties:
+            postId:
+              type: string
+              description: ID from table "posts"
+            userId:
+              type: string
+            userName:
+              type: string
+
+    Response_upvotes.toggleUpvote:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_upvotes.getUpvoteCount:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - postId
+          properties:
+            postId:
+              type: string
+              description: ID from table "posts"
+
+    Response_upvotes.getUpvoteCount:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_upvotes.hasUserUpvoted:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - postId
+            - userId
+          properties:
+            postId:
+              type: string
+              description: ID from table "posts"
+            userId:
+              type: string
+
+    Response_upvotes.hasUserUpvoted:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_notifications.getNotificationsForUser:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - userId
+          properties:
+            limit:
+              type: number
+            userId:
+              type: string
+
+    Response_notifications.getNotificationsForUser:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_notifications.getUnreadNotificationCount:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - userId
+          properties:
+            userId:
+              type: string
+
+    Response_notifications.getUnreadNotificationCount:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_notifications.markNotificationAsRead:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - notificationId
+          properties:
+            notificationId:
+              type: string
+              description: ID from table "notifications"
+
+    Response_notifications.markNotificationAsRead:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_notifications.markAllNotificationsAsRead:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - userId
+          properties:
+            userId:
+              type: string
+
+    Response_notifications.markAllNotificationsAsRead:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    Request_notifications.createNotification:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          required:
+            - actorId
+            - actorName
+            - message
+            - postId
+            - userId
+          properties:
+            actorId:
+              type: string
+            actorName:
+              type: string
+            message:
+              type: string
+            postId:
+              type: string
+              description: ID from table "posts"
+            userId:
+              type: string
+
+    Response_notifications.createNotification:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - "success"
+            - "error"
+        errorMessage:
+          type: string
+        errorData:
+          type: object
+        value: {}
+
+    FailedResponse:
+      type: object
+      properties: {}
